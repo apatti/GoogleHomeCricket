@@ -1,0 +1,22 @@
+{
+  "name": "googlehomecricket",
+  "version": "1.0.0",
+  "description": "Cricket action for google home",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "6.3.0"
+  },
+  "author": "Ashwin Patti",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "rss-to-json": "^1.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
