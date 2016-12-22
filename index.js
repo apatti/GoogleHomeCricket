@@ -23,8 +23,12 @@ app.get('/matches/:team/summary',function(req,res){
 
 app.post('/googlehome/matches',function(req,res){
   controller.allGames(function(rss) {
-    res.send({speech:rss,displayText:rss,data:[],contextOut:[],source:""});
+    res.send({speech:rss[0],displayText:rss[0],data:[],contextOut:[],source:""});
   });
+})
+
+app.post('/googlehome/gamesummary',function(req,res){
+
 })
 
 app.get('/matches/:team/detail',function(req,res){
