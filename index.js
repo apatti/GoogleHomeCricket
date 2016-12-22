@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var controller = require('./controller');
 app.set('port', (process.env.PORT || 8054));
-app.use(express.bodyParser());
+//app.use(express.bodyParser());
 
 app.get('/',function(req,res){
   res.send('Hello google home!!');
