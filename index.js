@@ -1,8 +1,13 @@
+var ApiAiAssistant = require('actions-on-google').ApiAiAssistant;
 var express = require('express');
-var app = express();
+let bodyParser = require('body-parser');
 var controller = require('./controller');
+var app = express();
 app.set('port', (process.env.PORT || 8054));
-//app.use(express.bodyParser());
+app.use(bodyParser.json({type: 'application/json'}));
+
+const SUMMARY_INTENT = 'matches';
+const MATCHES_INTENT = 'gamesummary';
 
 app.get('/',function(req,res){
   res.send('Hello google home!!');
@@ -22,15 +27,25 @@ app.get('/matches/:team/summary',function(req,res){
 
 })
 
-app.post('/googlehome/matches',function(req,res){
-  controller.allGames(function(rss) {
-    res.send({speech:rss[0],displayText:rss[0],data:{},contextOut:[],source:""});
-  });
-})
+app.post('/',function(req,res){
+  const assistant = new ApiAiAssistant({request: request, response: response});
 
-app.post('/googlehome/gamesummary',function(req,res){
+  function matchesIntent(assistant)
+  {
+    assistant.tell('List of matches for today are:');
+  }
 
-})
+  function matchSummary(assistant)
+  {
+    assistant.tell('Match summary web');
+  }
+
+  let actionMap = new Map();
+  actionMap.set(MATCHES_INTENT, matchesIntent);
+  actionMap.set(SUMMARY_INTENT, matchSummary);
+  assistant.handleRequest(actionMap);
+});
+
 
 app.get('/matches/:team/detail',function(req,res){
   res.send('Get '+req.params.team+' score detail');
