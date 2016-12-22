@@ -6,8 +6,8 @@ var app = express();
 app.set('port', (process.env.PORT || 8054));
 app.use(bodyParser.json({type: 'application/json'}));
 
-const SUMMARY_INTENT = 'matches';
-const MATCHES_INTENT = 'gamesummary';
+const SUMMARY_INTENT = 'gamesummary';
+const MATCHES_INTENT = 'matches';
 
 app.get('/',function(req,res){
   res.send('Hello google home!!');
