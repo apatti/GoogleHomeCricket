@@ -14,7 +14,11 @@ app.get('/matches',function(req,res){
 })
 
 app.get('/matches/:team/summary',function(req,res){
-  res.send('Get '+req.params.team+' score summary');
+  controller.gameSummary(req.params.team,function(summary)
+  {
+      res.send(summary);
+  });
+
 })
 
 app.get('/matches/:team/detail',function(req,res){
