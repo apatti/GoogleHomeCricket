@@ -28,7 +28,7 @@ app.get('/matches/:team/summary',function(req,res){
 })
 
 app.post('/',function(req,res){
-  const assistant = new ApiAiAssistant({request: request, response: response});
+  const assistant = new ApiAiAssistant({request: req, response: res});
 
   function matchesIntent(assistant)
   {
