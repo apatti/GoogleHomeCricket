@@ -1,7 +1,6 @@
 var express = require('express');
 var app = express();
-var feed = require('rss-to-json');
-var cricketURI = "http://static.cricinfo.com/rss/livescores.xml";
+var controller = require('./controller');
 app.set('port', (process.env.PORT || 8054));
 
 app.get('/',function(req,res){
@@ -9,10 +8,9 @@ app.get('/',function(req,res){
 })
 
 app.get('/matches',function(req,res){
-  feed.load(cricketURI,function(err,rss){
-      res.send(rss);
-  });
-
+  controller.allGames(function(rss) {
+    res.send(rss);
+  })
 })
 
 app.get('/matches/:team/summary',function(req,res){
