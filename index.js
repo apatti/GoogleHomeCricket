@@ -21,7 +21,7 @@ app.get('/matches/:team/summary',function(req,res){
 
 })
 
-app.post('/googlehome/gamelist',function(req,res){
+app.post('/googlehome/matches',function(req,res){
   controller.allGames(function(rss) {
     res.send(rss);
   });
