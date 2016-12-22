@@ -21,6 +21,12 @@ app.get('/matches/:team/summary',function(req,res){
 
 })
 
+app.post('/matches',function(req,res){
+  controller.allGames(function(rss) {
+    res.send(rss);
+  });
+})
+
 app.get('/matches/:team/detail',function(req,res){
   res.send('Get '+req.params.team+' score detail');
 })
