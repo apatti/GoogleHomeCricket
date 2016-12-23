@@ -8,6 +8,7 @@ app.use(bodyParser.json({type: 'application/json'}));
 
 const SUMMARY_INTENT = 'gamesummary';
 const MATCHES_INTENT = 'matches';
+const IS_TEAM_PLAYING_INTENT = 'isteamplaying';
 
 app.get('/',function(req,res){
   res.send('Hello google home!!');
@@ -46,19 +47,75 @@ app.post('/',function(req,res){
 
   function matchSummary(assistant)
   {
-    assistant.tell('Match summary web');
+    controller.gameSummary(assistant.getArgument('team'),function(summaryObj)
+    {
+      let text_speech='<speak>';
+      if('summary' not in summaryObj)
+      {
+        text_speech += '<speak>Sorry, '+assistant.getArgument('team')+' is not playing any game now <break time="1s"/> </speak>'
+      }
+      else {
+
+        text_speech += '<p><s>'+summaryObj.summary+'</s><break time="1s"/>';
+        if(summaryObj.team1.score!="")
+        {
+          text_speech += '<s>'+summaryObj.team1.name+' score is '+summaryObj.team1.score+'</s><break time="1s"/>';
+        }
+        if(summaryObj.team1.score!="")
+        {
+          text_speech += '<s>and '+summaryObj.team2.name+' score is '+summaryObj.team2.score+'</s><break time="1s"/>';
+        }
+      }
+      text_speech += '</speak>';
+      assistant.tell(text_speech);
+
+    });
+  }
+
+  function getScoreInSpeech(score)
+  {
+    var scoreSpeech = '';
+    if(score.indexOf('&'))
+    {
+      scoreList = score.split('&');
+    }
+  }
+
+  function isTeamPlaying(assistant)
+  {
+    controller.gameSummary(assistant.getArgument('team'),function(summaryObj)
+    {
+      var team = assistant.getArgument('team');
+      let text_speech='<speak>';
+      if('summary' not in summaryObj)
+      {
+        text_speech += 'Sorry, '+team+' is not playing any game now <break time="1s"/>'
+      }
+      else {
+
+        text_speech += '<p><s>Yes, the '+team+' is playing <break time="500ms"/> and the match summary is:</s><s>'+summaryObj.summary+'</s><break time="1s"/>';
+        if(summaryObj.team1.score!="")
+        {
+          text_speech += '<s>'+summaryObj.team1.name+' score is '+summaryObj.team1.score+'</s><break time="1s"/>';
+        }
+        if(summaryObj.team1.score!="")
+        {
+          text_speech += '<s>and '+summaryObj.team2.name+' score is '+summaryObj.team2.score+'</s><break time="1s"/>';
+        }
+      }
+      text_speech += '</speak>';
+      assistant.tell(text_speech);
+
+    });
   }
 
   let actionMap = new Map();
   actionMap.set(MATCHES_INTENT, matchesIntent);
   actionMap.set(SUMMARY_INTENT, matchSummary);
+  actionMap.set(IS_TEAM_PLAYING_INTENT,isTeamPlaying)
   assistant.handleRequest(actionMap);
 });
 
-
-app.get('/matches/:team/detail',function(req,res){
-  res.send('Get '+req.params.team+' score detail');
-})
 
 app.listen(app.get('port'),function(){
   console.log("googlehomecricket app is running at localhost:8054");

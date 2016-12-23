@@ -91,6 +91,7 @@ function getGameSummary(team,callback){
   });
 }
 
+
 module.exports = {
   allGames : getAllGames,
   gameSummary: getGameSummary
