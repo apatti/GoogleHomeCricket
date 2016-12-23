@@ -32,7 +32,16 @@ app.post('/',function(req,res){
 
   function matchesIntent(assistant)
   {
-    assistant.tell('List of matches for today are:');
+    controller.allGames(function(rss){
+      let text_speech = '<p><s>Current live games are:</s><break/>';
+      for(var game of rss)
+      {
+        var teams = game.split(' v ');
+        text_speech += '<s>'+teams[0]+' versus '+teams[1]+'</s><break/>';
+      }
+
+      assistant.tell(text_speech);
+    });
   }
 
   function matchSummary(assistant)
