@@ -57,11 +57,11 @@ app.post('/',function(req,res){
       else {
 
         text_speech += '<p><s>'+summaryObj.summary+'</s><break time="1s"/>';
-        if(summaryObj.team1.score!="")
+        if(summaryObj.team1.score!=="")
         {
           text_speech += '<s>'+summaryObj.team1.name+' score is '+summaryObj.team1.score+'</s><break time="1s"/>';
         }
-        if(summaryObj.team1.score!="")
+        if(summaryObj.team1.score!=="")
         {
           text_speech += '<s>and '+summaryObj.team2.name+' score is '+summaryObj.team2.score+'</s><break time="1s"/>';
         }
@@ -93,12 +93,12 @@ app.post('/',function(req,res){
       }
       else {
 
-        text_speech += '<p><s>Yes, the '+team+' is playing <break time="500ms"/> and the match summary is:</s><s>'+summaryObj.summary+'</s><break time="1s"/>';
-        if(summaryObj.team1.score!="")
+        text_speech += '<p><s>Yes, the '+team+' is playing <break time="500ms"/> and the match summary is:</s><s>'+summaryObj.summary+'. </s><break time="1s"/>';
+        if(summaryObj.team1.score!=="")
         {
           text_speech += '<s>'+summaryObj.team1.name+' score is '+summaryObj.team1.score+'</s><break time="1s"/>';
         }
-        if(summaryObj.team1.score!="")
+        if(summaryObj.team1.score!=="")
         {
           text_speech += '<s>and '+summaryObj.team2.name+' score is '+summaryObj.team2.score+'</s><break time="1s"/>';
         }
