@@ -33,11 +33,11 @@ app.post('/',function(req,res){
   function matchesIntent(assistant)
   {
     controller.allGames(function(rss){
-      let text_speech = '<speak><p><s>Current live games are:</s><break time=1s/>';
+      let text_speech = '<speak><p><s>Current live games are:</s><break time="1s"/>';
       for(var game of rss)
       {
         var teams = game.split(' v ');
-        text_speech += '<s>'+teams[0]+' versus '+teams[1]+'</s><break time=1s/>';
+        text_speech += '<s>'+teams[0]+' versus '+teams[1]+'</s><break time="1s"/>';
       }
       text_speech += '</p></speak>'
       assistant.tell(text_speech);
