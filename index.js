@@ -39,7 +39,7 @@ app.post('/',function(req,res){
         var teams = game.split(' v ');
         text_speech += '<s>'+teams[0]+' versus '+teams[1]+'</s><break time=1s/>';
       }
-      text_speech += '</speak>'
+      text_speech += '</p></speak>'
       assistant.tell(text_speech);
     });
   }
