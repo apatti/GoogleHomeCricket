@@ -87,7 +87,7 @@ app.post('/',function(req,res){
     {
       var team = assistant.getArgument('team');
       let text_speech='<speak>';
-      if('summary' not in summaryObj)
+      if!('summary' in summaryObj)
       {
         text_speech += 'Sorry, '+team+' is not playing any game now <break time="1s"/>'
       }
