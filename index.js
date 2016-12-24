@@ -9,7 +9,7 @@ app.use(bodyParser.json({type: 'application/json'}));
 const SUMMARY_INTENT = 'gamesummary';
 const MATCHES_INTENT = 'matches';
 const IS_TEAM_PLAYING_INTENT = 'isteamplaying';
-const scoreRunsRegex = /([0-9]+)((\/)?([0-9]+)?( )?\(?([0-9.]+)?( ov\))?)?/g;
+const scoreRunsRegex = /([0-9]+)((\/)?([0-9]+)?( )?\(?([0-9.]+)?( ov\))?)?/;
 
 app.get('/',function(req,res){
   res.send('Hello google home!!');
