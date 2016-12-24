@@ -41,7 +41,7 @@ app.post('/',function(req,res){
         text_speech += '<s>'+teams[0]+' versus '+teams[1]+'</s><break time="1s"/>';
       }
       text_speech += '</p></speak>'
-      assistant.tell(text_speech);
+      assistant.ask(text_speech);
     });
   }
 
@@ -58,7 +58,7 @@ app.post('/',function(req,res){
         text_speech += getSummarySpeech(summaryObj);
       }
       text_speech += '</speak>';
-      assistant.tell(text_speech);
+      assistant.ask(text_speech);
 
     });
   }
@@ -88,7 +88,7 @@ app.post('/',function(req,res){
         text_speech += '<s>Yes, the '+team+' is playing <break time="500ms"/> and the match summary is:</s><s>'+getSummarySpeech(summaryObj);
       }
       text_speech += '</speak>';
-      assistant.tell(text_speech);
+      assistant.ask(text_speech);
     });
   }
 
