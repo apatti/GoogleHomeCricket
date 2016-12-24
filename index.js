@@ -73,7 +73,7 @@ app.post('/',function(req,res){
     }
     if(summaryObj.team2.score!=="")
     {
-      text_speech += '<s>and '+summaryObj.team2.name+' score is '+getScoreInSpeech(summaryObj.team1.score)+'</s><break time="500ms"/>';
+      text_speech += '<s>and '+summaryObj.team2.name+' score is '+getScoreInSpeech(summaryObj.team2.score)+'</s><break time="500ms"/>';
     }
     text_speech+='</p>';
     return text_speech;
