@@ -81,6 +81,7 @@ app.post('/',function(req,res){
 
   function getScoreInSpeech(score)
   {
+    console.log(score);
     var scoreSpeech = '';
     if(score.indexOf('&'))
     {
@@ -103,11 +104,13 @@ app.post('/',function(req,res){
 
   function getRunsWicketsInSpeech(score)
   {
+    console.log(score);
     var speech = '';
     let scoreRegexMatches = scoreRunsRegex.exec(score);
     // index 1 is runs.
     // index 4 is wickets
     // index 6 is overs
+    console.log(scoreRegexMatches);
     if(scoreRegexMatches==null)
     {
       return null;
