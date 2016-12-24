@@ -9,7 +9,6 @@ app.use(bodyParser.json({type: 'application/json'}));
 const SUMMARY_INTENT = 'gamesummary';
 const MATCHES_INTENT = 'matches';
 const IS_TEAM_PLAYING_INTENT = 'isteamplaying';
-const scoreRunsRegex = /([0-9]+)((\/)?([0-9]+)?( )?\(?([0-9.]+)?( ov\))?)?/;
 
 app.get('/',function(req,res){
   res.send('Hello google home!!');
@@ -103,19 +102,17 @@ app.post('/',function(req,res){
 
   function getRunsWicketsInSpeech(score)
   {
-    console.log(score);
     var speech = '';
+    var scoreRunsRegex = /([0-9]+)((\/)?([0-9]+)?( )?\(?([0-9.]+)?( ov\))?)?/g;
     let scoreRegexMatches = scoreRunsRegex.exec(score);
     // index 1 is runs.
     // index 4 is wickets
     // index 6 is overs
-    console.log(scoreRegexMatches);
     if(scoreRegexMatches==null)
     {
       return null;
     }
     speech = '<s>'+scoreRegexMatches[1]+'<break time="500ms"/>';
-    console.log(speech);
     if(scoreRegexMatches[4]!=null)
     {
       if(scoreRegexMatches[4]==0)
