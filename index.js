@@ -50,7 +50,7 @@ app.post('/',function(req,res){
   {
     controller.gameSummary(assistant.getArgument('team'),function(summaryObj)
     {
-      let text_speech='<speak>';
+      var text_speech='<speak>';
       if(!('summary' in summaryObj))
       {
         text_speech += '<speak>Sorry, '+assistant.getArgument('team')+' is not playing any game now <break time="1s"/> </speak>'
