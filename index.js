@@ -24,10 +24,52 @@ app.get('/matches',function(req,res){
 app.get('/matches/:team/summary',function(req,res){
   controller.gameSummary(req.params.team,function(summary)
   {
+    var test1 = test(summary.team2.score);
+    console.log(test1);
       res.send(summary);
   });
 
 })
+
+function test(score)
+{
+  console.log(score);
+  var speech = '';
+  let scoreRegexMatches = scoreRunsRegex.exec(score);
+  // index 1 is runs.
+  // index 4 is wickets
+  // index 6 is overs
+  console.log(scoreRegexMatches);
+  if(scoreRegexMatches==null)
+  {
+    return null;
+  }
+  speech = '<s>'+scoreRegexMatches[1]+'<break time="500ms"/>';
+  console.log(speech);
+  if(scoreRegexMatches[4]!=null)
+  {
+    if(scoreRegexMatches[4]==0)
+    {
+      speech += ' no loss <break time="500ms"/>';
+    }
+    else if(scoreRegexMatches[4]==10)
+    {
+      speech += ' all out <break time="500ms"/>';
+    }
+    else
+    {
+      speech += ' for loss of '+scoreRegexMatches[4]+' wickets <break time="500ms"/>';
+    }
+  }
+
+  if(scoreRegexMatches[6]!=null)
+  {
+    speech += ' in '+scoreRegexMatches[6]+' overs.</s><break time="1s"/>'
+  }
+
+  return speech;
+}
+
 
 app.post('/',function(req,res){
   const assistant = new ApiAiAssistant({request: req, response: res});
