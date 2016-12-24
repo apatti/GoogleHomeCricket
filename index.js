@@ -57,6 +57,7 @@ app.post('/',function(req,res){
       }
       else {
         text_speech += getSummarySpeech(summaryObj);
+        console.log(text_speech);
       }
       text_speech += '</speak>';
       assistant.tell(text_speech);
@@ -77,7 +78,6 @@ app.post('/',function(req,res){
       text_speech += '<s>and '+summaryObj.team2.name+' score is '+summaryObj.team2.score+'</s><break time="1s"/>';
     }
     text_speech='</p>';
-    console.log(text_speech);
   }
 
   function getScoreInSpeech(score)
