@@ -63,6 +63,35 @@ app.post('/',function(req,res){
     });
   }
 
+  function welcome(assistant)
+  {
+      let speech = '<speak><p><s>Hi, welcome to Cricket Scores.<break time="1s"/></s>';
+      speech += '<s>You can query for live score summary of any cricket game. <break time="500ms"/></s>';
+      speech += '<s>You can check if a team is currently playing or not. <break time="500ms"></s>';
+      speech += '<s>You can query check full details of a live game. <break time="500ms"/></s>';
+      speech += '<s>You can query for list of games happening today.</s> <break time="500ms">';
+      speech += '</p></speak>';
+      assistant.tell(speech);
+  }
+
+  function isTeamPlaying(assistant)
+  {
+    controller.gameSummary(assistant.getArgument('team'),function(summaryObj)
+    {
+      var team = assistant.getArgument('team');
+      let text_speech='<speak>';
+      if(!('summary' in summaryObj))
+      {
+        text_speech += 'Sorry, '+team+' is not playing any game now <break time="1s"/>'
+      }
+      else {
+        text_speech += '<s>Yes, the '+team+' is playing <break time="500ms"/> and the match summary is:</s><s>'+getSummarySpeech(summaryObj);
+      }
+      text_speech += '</speak>';
+      assistant.tell(text_speech);
+    });
+  }
+
   function getSummarySpeech(summaryObj)
   {
     var text_speech = '<p><s>'+summaryObj.summary+'.<break time="1s"/></s>';
@@ -137,23 +166,6 @@ app.post('/',function(req,res){
     return speech;
   }
 
-  function isTeamPlaying(assistant)
-  {
-    controller.gameSummary(assistant.getArgument('team'),function(summaryObj)
-    {
-      var team = assistant.getArgument('team');
-      let text_speech='<speak>';
-      if(!('summary' in summaryObj))
-      {
-        text_speech += 'Sorry, '+team+' is not playing any game now <break time="1s"/>'
-      }
-      else {
-        text_speech += '<s>Yes, the '+team+' is playing <break time="500ms"/> and the match summary is:</s><s>'+getSummarySpeech(summaryObj);
-      }
-      text_speech += '</speak>';
-      assistant.tell(text_speech);
-    });
-  }
 
   let actionMap = new Map();
   actionMap.set(MATCHES_INTENT, matchesIntent);
