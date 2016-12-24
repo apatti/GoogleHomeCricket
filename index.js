@@ -66,7 +66,7 @@ app.post('/',function(req,res){
 
   function getSummarySpeech(summaryObj)
   {
-    var text_speech = '<p><s>'+summaryObj.summary+'</s><break time="1s"/>';
+    var text_speech = '<p><s>'+summaryObj.summary+'.</s><break time="1s"/>';
     if(summaryObj.team1.score!=="")
     {
       text_speech += '<s>'+summaryObj.team1.name+' score is '+getScoreInSpeech(summaryObj.team1.score)+'.</s><break time="1s"/>';
@@ -81,7 +81,6 @@ app.post('/',function(req,res){
 
   function getScoreInSpeech(score)
   {
-    console.log(score);
     var scoreSpeech = '';
     if(score.indexOf('&'))
     {
@@ -116,7 +115,7 @@ app.post('/',function(req,res){
       return null;
     }
     speech = '<s>'+scoreRegexMatches[1]+'<break time="500ms"/>';
-
+    console.log(speech);
     if(scoreRegexMatches[4]!=null)
     {
       if(scoreRegexMatches[4]==0)
