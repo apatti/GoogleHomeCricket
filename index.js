@@ -71,7 +71,7 @@ app.post('/',function(req,res){
       speech += '<s>Get full details of a live game. <break time="500ms"/></s>';
       speech += '<s>Get list of games happening today.</s> <break time="500ms"/>';
       speech += '</p></speak>';
-      assistant.tell(speech);
+      assistant.ask(speech);
   }
 
   function isTeamPlaying(assistant)
