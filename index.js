@@ -9,7 +9,7 @@ app.use(bodyParser.json({type: 'application/json'}));
 const SUMMARY_INTENT = 'gamesummary';
 const MATCHES_INTENT = 'matches';
 const IS_TEAM_PLAYING_INTENT = 'isteamplaying';
-
+const WELCOME_INTENT = 'input_welcome';
 app.get('/',function(req,res){
   res.send('Hello google home!!');
 })
@@ -171,6 +171,7 @@ app.post('/',function(req,res){
   actionMap.set(MATCHES_INTENT, matchesIntent);
   actionMap.set(SUMMARY_INTENT, matchSummary);
   actionMap.set(IS_TEAM_PLAYING_INTENT,isTeamPlaying)
+  actionMap.set(WELCOME_INTENT,welcome);
   assistant.handleRequest(actionMap);
 });
 
