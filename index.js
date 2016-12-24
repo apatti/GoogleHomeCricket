@@ -56,9 +56,8 @@ app.post('/',function(req,res){
         text_speech += '<speak>Sorry, '+assistant.getArgument('team')+' is not playing any game now <break time="1s"/> </speak>'
       }
       else {
-        assistant.tell("Hello "+assistant.getArgument('team'));
-        return;
         text_speech += getSummarySpeech(summaryObj);
+        assistant.tell(text_speech);
         console.log(text_speech);
       }
       text_speech += '</speak>';
