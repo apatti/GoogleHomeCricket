@@ -111,7 +111,7 @@ app.post('/',function(req,res){
     {
       return null;
     }
-    speech = '<s>'+score[1] '<break time="500ms"/>';
+    speech = '<s>'+score[1]+'<break time="500ms"/>';
 
     if(scoreRegexMatches[4]!=null)
     {
