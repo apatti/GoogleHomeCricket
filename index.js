@@ -66,7 +66,7 @@ app.post('/',function(req,res){
 
   function getSummarySpeech(summaryObj)
   {
-    var text_speech += '<p><s>'+summaryObj.summary+'</s><break time="1s"/>';
+    var text_speech = '<p><s>'+summaryObj.summary+'</s><break time="1s"/>';
     if(summaryObj.team1.score!=="")
     {
       text_speech += '<s>'+summaryObj.team1.name+' score is '+summaryObj.team1.score+'</s><break time="1s"/>';
