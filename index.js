@@ -99,7 +99,8 @@ app.post('/',function(req,res){
     var team = assistant.getArgument('team');
     if(team==null)
     {
-      console.log(assistant.data);
+      console.log(assistant);
+
       team = assistant.data['team'];
     }
     assistant.tell("Working"+team);
