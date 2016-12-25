@@ -96,6 +96,11 @@ app.post('/',function(req,res){
 
   function whogotout(assistant)
   {
+    var team = assistant.getArgument('team');
+    if(team==null)
+    {
+      team = assistant.getArgument('contexts');
+    }
     assistant.tell("Working"+assistant.getArgument('team'));
   }
 
