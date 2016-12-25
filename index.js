@@ -96,6 +96,7 @@ app.post('/',function(req,res){
 
   function whogotout(assistant)
   {
+    console.log(assistant);
     var team = assistant.getArgument('team');
     if(team==null)
     {
