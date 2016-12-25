@@ -125,6 +125,7 @@ app.post('/',function(req,res){
     if(score.indexOf('&'))
     {
       scoreList = score.split('&');
+      var teamIndex = 0;
       for(var teamScore of scoreList)
       {
         let teamScoreSpeech = getRunsWicketsInSpeech(teamScore);
@@ -132,7 +133,13 @@ app.post('/',function(req,res){
         {
           return null;
         }
+        if(teamIndex!=0)
+        {
+          scoreSpeech += ' in first innings <break time="500ms"/> and in second innings their score is ';
+        }
         scoreSpeech+=teamScoreSpeech;
+
+        teamIndex++;
       }
     }
     else {
@@ -153,7 +160,7 @@ app.post('/',function(req,res){
     {
       return null;
     }
-    speech = '<s>'+scoreRegexMatches[1]+'<break time="500ms"/>';
+    speech = ' '+scoreRegexMatches[1]+'<break time="500ms"/>';
     if(scoreRegexMatches[4]!=null)
     {
       if(scoreRegexMatches[4]==0)
@@ -172,9 +179,9 @@ app.post('/',function(req,res){
 
     if(scoreRegexMatches[6]!=null)
     {
-      speech += ' in '+scoreRegexMatches[6]+' overs.</s><break time="1s"/>'
+      speech += ' in '+scoreRegexMatches[6]+' overs.'
     }
-
+    speech += '<break time="1s"/>'
     return speech;
   }
 
