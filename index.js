@@ -10,6 +10,8 @@ const SUMMARY_INTENT = 'gamesummary';
 const MATCHES_INTENT = 'matches';
 const IS_TEAM_PLAYING_INTENT = 'isteamplaying';
 const WELCOME_INTENT = 'input_welcome';
+const WHO_GOT_OUT_INTENT='whogotout';
+
 app.get('/',function(req,res){
   res.send('Hello google home!!');
 })
@@ -92,6 +94,11 @@ app.post('/',function(req,res){
     });
   }
 
+  function whogotout(assistant)
+  {
+    assistant.tell("Working"+assistant.getArgument('team'));
+  }
+
   function getSummarySpeech(summaryObj)
   {
     var text_speech = '<p><s>'+summaryObj.summary+'.<break time="1s"/></s>';
@@ -172,6 +179,7 @@ app.post('/',function(req,res){
   actionMap.set(SUMMARY_INTENT, matchSummary);
   actionMap.set(IS_TEAM_PLAYING_INTENT,isTeamPlaying)
   actionMap.set(WELCOME_INTENT,welcome);
+  actionMap.set(WHO_GOT_OUT_INTENT,whogotout);
   assistant.handleRequest(actionMap);
 });
 
