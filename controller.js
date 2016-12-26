@@ -89,7 +89,7 @@ function getGameSummary(team,callback){
   //     callback(summary);
   //   });
   // });
-  getGameObj(function(matchObj){
+  getGameObj(team,function(matchObj){
     if(matchObj==null)
     {
       callback(null);
@@ -102,7 +102,7 @@ function getGameSummary(team,callback){
 }
 
 function getBattingDetails(team,callback){
-  getGameObj(function(matchObj){
+  getGameObj(team,function(matchObj){
     if(matchObj==null)
     {
       callback(null);
@@ -111,7 +111,7 @@ function getBattingDetails(team,callback){
   });
 }
 
-function getGameObj(callback){
+function getGameObj(team,callback){
   feed.load(cricketURI,function(err,rss){
     var summary = {}
     var teamMap = getTeamMatchMap(rss.items);
