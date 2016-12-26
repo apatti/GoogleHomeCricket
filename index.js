@@ -227,7 +227,7 @@ app.post('/',function(req,res){
     {
       speech += ' in '+scoreRegexMatches[6]+' overs.'
     }
-    speech += '<break time="1s"/>'
+    //speech += '<break time="1s"/>'
     return speech;
   }
 
