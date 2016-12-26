@@ -131,7 +131,7 @@ app.post('/',function(req,res){
       assistant.ask("Sure, please let me know the team name?");
       return;
     }
-    controller.getBattingDetails(team,function(outbatsman,strikebatsman){
+    controller.getBattingDetails(team,function(outbatsmanObj,strikebatsmanObj){
       var outbatsman=[]
       for(var batsman of outbatsmanObj)
       {
