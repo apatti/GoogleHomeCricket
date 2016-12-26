@@ -101,6 +101,12 @@ app.post('/',function(req,res){
     {
       team = assistant.data['team'];
     }
+    if(team == null)
+    {
+      assistant.ask("Sure, please let me know the team name?");
+      return;
+    }
+    
     assistant.tell("Working"+team);
   }
 
