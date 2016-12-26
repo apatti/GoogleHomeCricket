@@ -233,30 +233,28 @@ app.post('/',function(req,res){
 
   function getWhoOutInSpeech(outbatsman, strikebatsman)
   {
-    var speech = '<speak>Currently: <break time="500ms"/> ';
+    var speech = '<speak>';
+    if(outbatsman.length==0)
+    {
+      speech += 'No one is out!!<break time="500ms"/>';
+    }
+    else {
+      speech += 'following folks are out:<break time="500ms"/>';
+      for(var batsman of outbatsman)
+      {
+        speech += batsman.name+' <break time="750ms"/>, he scored ' + batsman.score + ' runs<break time="500ms"/>.';
+      }
+    }
+    speech += " and Currently: "
     var index = 0;
     for(var batsman of strikebatsman)
     {
-      speech +=  batsman.name + " is batting, he scored " + batsman.score + ' runs <break time="500ms"/>'
+      speech +=  batsman.name + " is batting, on " + batsman.score + ' runs <break time="500ms"/>'
       if(index==0)
       {
         speech += ' and ';
       }
-      else {
-        speech += ' and <break time="1s"/>';
-      }
       index ++ ;
-    }
-
-    if(outbatsman.length==0)
-    {
-      speech += 'no one is out!!<break time="1s"/></speak>';
-      return speech;
-    }
-    speech += 'following folks are out:<break time="500ms"/>';
-    for(var batsman of outbatsman)
-    {
-      speech += batsman.name+' <break time="750ms"/>, he scored ' + batsman.score + ' runs<break time="500ms"/>.';
     }
     speech +='</speak>';
     return speech;
