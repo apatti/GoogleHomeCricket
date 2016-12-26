@@ -243,7 +243,7 @@ app.post('/',function(req,res){
       for(var batsman of outbatsman)
       {
         var runsText=(batsman.score==1)?' run':'runs';
-        speech += batsman.name+' <break time="750ms"/>, he scored ' + batsman.score + runsText+'<break time="500ms"/>.';
+        speech += batsman.name+' <break time="750ms"/>, for ' + batsman.score + runsText+'<break time="500ms"/>.';
       }
     }
     speech += " Currently: "
