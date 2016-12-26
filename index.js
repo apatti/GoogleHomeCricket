@@ -120,6 +120,7 @@ app.post('/',function(req,res){
 
   function whogotout(assistant)
   {
+    console.log("in who got out:");
     var team = assistant.getArgument('team');
     if(team==null)
     {
