@@ -135,7 +135,7 @@ app.post('/',function(req,res){
       var outbatsman=[]
       for(var batsman of outbatsmanObj)
       {
-        var batsmanRegex = /([a-zA-Z ]+)([0-9]+)/g
+        var batsmanRegex = /([a-zA-Z -]+)([0-9]+)/g
         var batsmanMatches = batsmanRegex.exec(batsman);
         outbatsman.push({name:batsmanMatches[1].replace(/\s*$/,""),score:batsmanMatches[2]});
       }
