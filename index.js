@@ -32,9 +32,24 @@ app.get('/matches/:team/summary',function(req,res){
 
 
 app.get('/matches/:team/battingOut',function(req,res){
-  controller.getBattingDetails(req.params.team,function(summary)
+  controller.getBattingDetails(req.params.team,function(outbatsmanObj,strikebatsmanObj)
   {
-    res.send(summary);
+    var outbatsman=[]
+    for(var batsman of outbatsmanObj)
+    {
+      var batsmanRegex = /([a-zA-Z ]+)([0-9]+)/g
+      var batsmanMatches = batsmanRegex.exec(batsman);
+      outbatsman.push({name:batsmanMatches[1].replace(/\s*$/,""),score:batsmanMatches[2]});
+    }
+
+    var strikebatsman=[]
+    for(var batsman of strikebatsmanObj)
+    {
+      var batsmanRegex = /([a-zA-Z ]+)([0-9]+)\*/g
+      var batsmanMatches = batsmanRegex.exec(batsman);
+      strikebatsman.push({name:batsmanMatches[1].replace(/\s*$/,""),score:batsmanMatches[2]});
+    }
+    res.send({"outbatsman":outbatsman,"strikebatsman":strikebatsman});
   });
 
 })
@@ -115,8 +130,23 @@ app.post('/',function(req,res){
       assistant.ask("Sure, please let me know the team name?");
       return;
     }
-
-    assistant.tell("Working"+team);
+    controller.getBattingDetails(team,function(outbatsman,strikebatsman){
+      var outbatsman=[]
+      for(var batsman of outbatsmanObj)
+      {
+        var batsmanRegex = /([a-zA-Z ]+)([0-9]+)/g
+        var batsmanMatches = batsmanRegex.exec(batsman);
+        outbatsman.push({name:batsmanMatches[1].replace(/\s*$/,""),score:batsmanMatches[2]});
+      }
+      var strikebatsman=[]
+      for(var batsman of strikebatsmanObj)
+      {
+        var batsmanRegex = /([a-zA-Z ]+)([0-9]+)\*/g
+        var batsmanMatches = batsmanRegex.exec(batsman);
+        strikebatsman.push({name:batsmanMatches[1].replace(/\s*$/,""),score:batsmanMatches[2]});
+      }
+      assistant.tell(getWhoOutInSpeech(outbatsman,strikebatsman));
+    });
   }
 
   function getSummarySpeech(summaryObj)
@@ -200,6 +230,36 @@ app.post('/',function(req,res){
     return speech;
   }
 
+  function getWhoOutInSpeech(outbatsman, strikebatsman)
+  {
+    var speech = '<speak>Currently: <break time="500ms"/> ';
+    var index = 0;
+    for(var batsman of strikebatsman)
+    {
+      speech +=  batsman.name + " is on strike, he scored " + batsman.score + ' runs <break time="500ms"/>'
+      if(index==0)
+      {
+        speech += ' and ';
+      }
+      else {
+        speech += ' and <break time="1s"/>';
+      }
+      index ++ ;
+    }
+
+    if(outbatsman.length==0)
+    {
+      speech += 'no one is out!!<break time="1s"/></speak>';
+      return speech;
+    }
+    speech += 'following folks are out:<break time="500ms"/>';
+    for(var batsman of outbatsman)
+    {
+      speech += batsman.name+' <break time="750ms"/> for ' + batsman.score + ' runs<break time="500ms"/>.';
+    }
+    speech +='</speak>';
+    return speech;
+  }
 
   let actionMap = new Map();
   actionMap.set(MATCHES_INTENT, matchesIntent);

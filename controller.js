@@ -4,7 +4,7 @@ var request = require('request');
 var gameRegex = /[^a-zA-Z ]+/g
 var stringSimilarity = require('string-similarity');
 var cheerio = require('cheerio');
-
+var cricketBase = 'http://www.espncricinfo.com';
 function getAllGames(callback){
   feed.load(cricketURI,function(err,rss){
       var games = [];
@@ -76,11 +76,30 @@ function getBattingDetails(team,callback){
     }
     getScoreHtml(matchObj.link,function(html){
       var $ = cheerio.load(html);
-      var wicketsUrl=$('inline-list commentary-main-events-links').filter(function(i,el){
+      var wicketsUrl=$('.inline-list.commentary-main-events-links').children().filter(function(i,el){
         return $(this).attr('class')==='remove-border-right';
-      }).children[0].attr('href');
-      console.log(wicketsUrl);
-      callback(wicketsUrl);
+      }).children().first().attr('href');
+
+      getScoreHtml(cricketBase+wicketsUrl,function(html){
+          var $ = cheerio.load(html);
+          var outbatsman = [];
+          var strikebatsman = [];
+          $('.comments-link-list').find('li').each(function(i,e){
+            var text = $(this).text();
+            if(['Fours','Sixes','Wickets'].indexOf(text)==-1 && text.indexOf('/')==-1)
+            {
+              if(text.indexOf('*')!=-1)
+              {
+                strikebatsman.push(text);
+              }
+              else
+              {
+                outbatsman.push(text);
+              }
+            }
+          });
+          callback(outbatsman,strikebatsman);
+      });
     });
   });
 }
