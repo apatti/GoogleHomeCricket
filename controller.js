@@ -66,6 +66,25 @@ function getScoreSummary(gameObj,callback)
   });
 }
 
+
+function getBattingDetails(team,callback){
+  getGameObj(team,function(matchObj){
+    if(matchObj==null)
+    {
+      callback(null);
+      return;
+    }
+    getScoreHtml(matchObj.link,function(html){
+      var $ = cheerio.load(html);
+      var wicketsUrl=$('inline-list commentary-main-events-links').filter(function(i,el){
+        return $(this).attr('class')==='remove-border-right';
+      }).children[0].attr('href');
+      console.log(wicketsUrl);
+      callback(wicketsUrl);
+    });
+  });
+}
+
 function getTeamSummaryObj(data)
 {
   var name = data.text().replace(/[\n\t\r]/g,"");
@@ -75,39 +94,15 @@ function getTeamSummaryObj(data)
 }
 
 function getGameSummary(team,callback){
-  // feed.load(cricketURI,function(err,rss){
-  //   var summary = {}
-  //   var teamMap = getTeamMatchMap(rss.items);
-  //   var teamMatchObj = stringSimilarity.findBestMatch(team,Object.keys(teamMap));
-  //   //console.log(teamMatchObj)
-  //   if(teamMatchObj.bestMatch.rating<=0.3)
-  //   {
-  //     callback({});
-  //     return;
-  //   }
-  //   getScoreSummary(teamMap[teamMatchObj.bestMatch.target],function(summary){
-  //     callback(summary);
-  //   });
-  // });
   getGameObj(team,function(matchObj){
     if(matchObj==null)
     {
       callback(null);
       return;
     }
-    getScoreSummary(teamMap[teamMatchObj.bestMatch.target],function(summary){
+    getScoreSummary(matchObj,function(summary){
       callback(summary);
     });
-  });
-}
-
-function getBattingDetails(team,callback){
-  getGameObj(team,function(matchObj){
-    if(matchObj==null)
-    {
-      callback(null);
-      return;
-    }
   });
 }
 
@@ -129,5 +124,6 @@ function getGameObj(team,callback){
 
 module.exports = {
   allGames : getAllGames,
-  gameSummary: getGameSummary
+  gameSummary: getGameSummary,
+  getBattingDetails: getBattingDetails
 }

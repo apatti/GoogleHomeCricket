@@ -30,6 +30,15 @@ app.get('/matches/:team/summary',function(req,res){
 
 })
 
+
+app.get('/matches/:team/battingOut',function(req,res){
+  controller.getBattingDetails(req.params.team,function(summary)
+  {
+    res.send(summary);
+  });
+
+})
+
 app.post('/',function(req,res){
   const assistant = new ApiAiAssistant({request: req, response: res});
 
@@ -106,7 +115,7 @@ app.post('/',function(req,res){
       assistant.ask("Sure, please let me know the team name?");
       return;
     }
-    
+
     assistant.tell("Working"+team);
   }
 
