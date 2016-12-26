@@ -236,7 +236,7 @@ app.post('/',function(req,res){
     var index = 0;
     for(var batsman of strikebatsman)
     {
-      speech +=  batsman.name + " is on strike, he scored " + batsman.score + ' runs <break time="500ms"/>'
+      speech +=  batsman.name + " is batting, he scored " + batsman.score + ' runs <break time="500ms"/>'
       if(index==0)
       {
         speech += ' and ';
@@ -255,7 +255,7 @@ app.post('/',function(req,res){
     speech += 'following folks are out:<break time="500ms"/>';
     for(var batsman of outbatsman)
     {
-      speech += batsman.name+' <break time="750ms"/> for ' + batsman.score + ' runs<break time="500ms"/>.';
+      speech += batsman.name+' <break time="750ms"/>, he scored ' + batsman.score + ' runs<break time="500ms"/>.';
     }
     speech +='</speak>';
     return speech;
