@@ -234,6 +234,7 @@ app.post('/',function(req,res){
 
   function whobowling(assistant)
   {
+    console.log(assistant);
     var team = assistant.getArgument('team');
     if(team==null)
     {
