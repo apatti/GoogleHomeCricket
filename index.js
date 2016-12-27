@@ -56,6 +56,31 @@ app.get('/matches/:team/battingOut',function(req,res){
 
 })
 
+app.get('/matches/:team/bowling',function(req,res){
+  controller.gameSummary(req.params.team,function(summaryObj)
+  {
+    if(!('summary' in summaryObj))
+    {
+      res.send({"bowlers":"No game is scheduled"});
+      return;
+    }
+    if(summaryObj.summary=='')
+    {
+      res.send({"bowlers":'Match did not start yet!!.'});
+      return;
+    }
+    var index=0;
+    var bowlers=[];
+    for(var player of summaryObj.currentBowlers)
+    {
+      var bowlerRegex = /([a-zA-Z -]+)([0-9]+)-([0-9]+)-([0-9]+)-([0-9]+)/g
+      var bowlerMatches = bowlerRegex.exec(player);
+      bowlers.push(bowlerMatches[1].replace(/\s*$/,""));
+    }
+    res.send({"bowlers":bowlers});
+  });
+});
+
 app.post('/',function(req,res){
   const assistant = new ApiAiAssistant({request: req, response: res});
 
