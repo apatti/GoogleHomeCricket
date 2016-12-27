@@ -154,7 +154,7 @@ app.post('/',function(req,res){
   {
     if(summaryObj.summary=='')
     {
-      return '<p><s>Match did not start!!.</s></p>';
+      return '<p><s>Match did not start yet!!.</s></p>';
     }
     var text_speech = '<p><s>'+summaryObj.summary+'.<break time="500ms"/></s>';
     var index=0;
@@ -177,7 +177,7 @@ app.post('/',function(req,res){
     {
       text_speech+= ' are at the crease.';
     }
-    
+
     if(summaryObj.team1.score!=="")
     {
       text_speech += '<s>'+summaryObj.team1.name+' score is '+getScoreInSpeech(summaryObj.team1.score)+'.</s><break time="500ms"/>';
