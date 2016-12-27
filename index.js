@@ -39,7 +39,7 @@ app.get('/matches/:team/battingOut',function(req,res){
     var outbatsman=[]
     for(var batsman of outbatsmanObj)
     {
-      var batsmanRegex = /([a-zA-Z ]+)([0-9]+)/g
+      var batsmanRegex = /([a-zA-Z -]+)([0-9]+)/g
       var batsmanMatches = batsmanRegex.exec(batsman);
       outbatsman.push({name:batsmanMatches[1].replace(/\s*$/,""),score:batsmanMatches[2]});
     }
@@ -47,7 +47,7 @@ app.get('/matches/:team/battingOut',function(req,res){
     var strikebatsman=[]
     for(var batsman of strikebatsmanObj)
     {
-      var batsmanRegex = /([a-zA-Z ]+)([0-9]+)\*/g
+      var batsmanRegex = /([a-zA-Z -]+)([0-9]+)\*/g
       var batsmanMatches = batsmanRegex.exec(batsman);
       strikebatsman.push({name:batsmanMatches[1].replace(/\s*$/,""),score:batsmanMatches[2]});
     }
@@ -96,7 +96,8 @@ app.post('/',function(req,res){
       let speech = '<speak><p><s>Hi, welcome to Cricket Scores.<break time="1s"/></s>';
       speech += '<s>You can: Get live summary of any cricket game. <break time="500ms"/></s>';
       speech += '<s>Check if a team is currently playing or not. <break time="500ms"/></s>';
-      speech += '<s>Check who is at crease for a live game. <break time="500ms"/></s>';
+      speech += '<s>Query who is at crease for a live game. <break time="500ms"/></s>';
+      speech += '<s>Query who is bowling.<break time="500ms"/></s>';
       speech += '<s>Check who all got out for a live game. <break time="500ms"/></s>';
       speech += '<s>Get list of games happening today.</s> <break time="500ms"/>';
       speech += '</p></speak>';
@@ -180,6 +181,59 @@ app.post('/',function(req,res){
         else {
           var index=0;
           for(var player of summaryObj.strikebatsman)
+          {
+            var batsmanRegex = /([a-zA-Z ]+)([0-9]+)\*/g
+            var batsmanMatches = batsmanRegex.exec(player);
+            if(index==1)
+            {
+              text_speech += ' and ';
+            }
+            text_speech += batsmanMatches[1].replace(/\s*$/,"")
+            index++;
+          }
+          if(index==1)
+          {
+            text_speech+=' is at the crease.';
+          }
+          if(index==2)
+          {
+            text_speech+= ' are at the crease.';
+          }
+        }
+
+      }
+      text_speech += '</speak>';
+      assistant.ask(text_speech);
+    });
+  }
+
+  function whobowling(assistant)
+  {
+    var team = assistant.getArgument('team');
+    if(team==null)
+    {
+      team = assistant.data['team'];
+    }
+    if(team == null)
+    {
+      assistant.ask("Sure, please let me know the team name?");
+      return;
+    }
+    controller.gameSummary(team,function(summaryObj)
+    {
+      var text_speech='<speak>';
+      if(!('summary' in summaryObj))
+      {
+        text_speech += '<speak>Sorry, '+assistant.getArgument('team')+' is not playing any game now <break time="1s"/> </speak>'
+      }
+      else {
+        if(summaryObj.summary=='')
+        {
+          text_speech += 'Match did not start yet!!.';
+        }
+        else {
+          var index=0;
+          for(var player of summaryObj.currentBowlers)
           {
             var batsmanRegex = /([a-zA-Z ]+)([0-9]+)\*/g
             var batsmanMatches = batsmanRegex.exec(player);
@@ -349,6 +403,7 @@ app.post('/',function(req,res){
   actionMap.set(WELCOME_INTENT,welcome);
   actionMap.set(WHO_GOT_OUT_INTENT,whogotout);
   actionMap.set(WHO_AT_CREASE,whoatcrease);
+  actionMap.set(WHO_BOWLING,whobowling);
   assistant.handleRequest(actionMap);
 });
 
