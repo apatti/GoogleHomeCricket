@@ -11,6 +11,8 @@ const MATCHES_INTENT = 'matches';
 const IS_TEAM_PLAYING_INTENT = 'isteamplaying';
 const WELCOME_INTENT = 'input_welcome';
 const WHO_GOT_OUT_INTENT='whogotout';
+const WHO_AT_CREASE = 'whoatcrease';
+const WHO_BOWLING = 'whobowling';
 
 app.get('/',function(req,res){
   res.send('Hello google home!!');
@@ -150,6 +152,59 @@ app.post('/',function(req,res){
     });
   }
 
+  function whoatcrease(assistant)
+  {
+    var team = assistant.getArgument('team');
+    if(team==null)
+    {
+      team = assistant.data['team'];
+    }
+    if(team == null)
+    {
+      assistant.ask("Sure, please let me know the team name?");
+      return;
+    }
+    controller.gameSummary(team,function(summaryObj)
+    {
+      var text_speech='<speak>';
+      if(!('summary' in summaryObj))
+      {
+        text_speech += '<speak>Sorry, '+assistant.getArgument('team')+' is not playing any game now <break time="1s"/> </speak>'
+      }
+      else {
+        if(summaryObj.summary=='')
+        {
+          text_speech += 'Match did not start yet!!.';
+        }
+        else {
+          var index=0;
+          for(var player of summaryObj.strikebatsman)
+          {
+            var batsmanRegex = /([a-zA-Z ]+)([0-9]+)\*/g
+            var batsmanMatches = batsmanRegex.exec(player);
+            if(index==1)
+            {
+              text_speech += ' and ';
+            }
+            text_speech += batsmanMatches[1].replace(/\s*$/,"")
+            index++;
+          }
+          if(index==1)
+          {
+            text_speech+=' is at the crease.';
+          }
+          if(index==2)
+          {
+            text_speech+= ' are at the crease.';
+          }
+        }
+
+      }
+      text_speech += '</speak>';
+      assistant.ask(text_speech);
+    });
+  }
+
   function getSummarySpeech(summaryObj)
   {
     if(summaryObj.summary=='')
@@ -166,7 +221,7 @@ app.post('/',function(req,res){
       {
         text_speech += ' and ';
       }
-      text_speech += '<s>'+batsmanMatches[1].replace(/\s*$/,"")
+      text_speech += batsmanMatches[1].replace(/\s*$/,"")
       index++;
     }
     if(index==1)
@@ -292,6 +347,7 @@ app.post('/',function(req,res){
   actionMap.set(IS_TEAM_PLAYING_INTENT,isTeamPlaying)
   actionMap.set(WELCOME_INTENT,welcome);
   actionMap.set(WHO_GOT_OUT_INTENT,whogotout);
+  actionMap.set(WHO_AT_CREASE,whoatcrease);
   assistant.handleRequest(actionMap);
 });
 
