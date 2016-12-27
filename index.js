@@ -152,7 +152,32 @@ app.post('/',function(req,res){
 
   function getSummarySpeech(summaryObj)
   {
+    if(summaryObj.summary=='')
+    {
+      return '<p><s>Match did not start!!.</s></p>';
+    }
     var text_speech = '<p><s>'+summaryObj.summary+'.<break time="500ms"/></s>';
+    var index=0;
+    for(var player of strikebatsman)
+    {
+      var batsmanRegex = /([a-zA-Z ]+)([0-9]+)\*/g
+      var batsmanMatches = batsmanRegex.exec(player);
+      if(index==1)
+      {
+        text_speech += ' and ';
+      }
+      text_speech += '<s>'+batsmanMatches[1].replace(/\s*$/,"")
+      index++;
+    }
+    if(index==1)
+    {
+      text_speech+=' is at the crease.';
+    }
+    if(index==2)
+    {
+      text_speech+= ' are at the crease.';
+    }
+    
     if(summaryObj.team1.score!=="")
     {
       text_speech += '<s>'+summaryObj.team1.name+' score is '+getScoreInSpeech(summaryObj.team1.score)+'.</s><break time="500ms"/>';

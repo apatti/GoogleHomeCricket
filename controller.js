@@ -46,9 +46,9 @@ function getScoreHtml(link,callback){
   });
 }
 
-function getScoreSummary(gameObj,callback)
+function getScoreSummaryOld(gameObj,callback)
 {
-  var html = getScoreHtml(gameObj.link+"&view=scorecard",function(html){
+  getScoreHtml(gameObj.link+"&view=scorecard",function(html){
     var $ = cheerio.load(html);
     var summary,team1,team2;
     $('.innings-requirement').filter(function(){
@@ -61,8 +61,47 @@ function getScoreSummary(gameObj,callback)
     $('.team-2-name').filter(function(){
       team2 = getTeamSummaryObj($(this));
     });
-
     callback({summary:summary,team1:team1,team2:team2});
+
+  });
+}
+
+function getScoreSummary(gameObj,callback)
+{
+  getScoreHtml(gameObj.link,function(html){
+    var $ = cheerio.load(html);
+    var wicketsUrl=$('.inline-list.commentary-main-events-links').children().filter(function(i,el){
+      return $(this).attr('class')==='remove-border-right';
+    }).children().first().attr('href');
+
+    getScoreHtml(cricketBase+wicketsUrl,function(html){
+        var $ = cheerio.load(html);
+        var strikebatsman = [];
+        var currentBowlers = [];
+        var summary,team1,team2;
+        $('.innings-requirement').filter(function(){
+          var data = $(this);
+          summary = data.text().replace(/[\n\t\r]/g,"").trim();
+        });
+        $('.team-1-name').filter(function(){
+          team1 = getTeamSummaryObj($(this));
+        });
+        $('.team-2-name').filter(function(){
+          team2 = getTeamSummaryObj($(this));
+        });
+        $('.large-7.medium-7.columns.text-right.match-information').filter(function(){
+          $(this).children().each(function(i,elem){
+            if($(this).text().indexOf('*')!=-1)
+            {
+              strikebatsman.push($(this).text());
+            }
+            else {
+              currentBowlers.push($(this).text());
+            }
+          });
+        });
+        callback({summary:summary,team1:team1,team2:team2,strikebatsman:strikebatsman,currentBowlers:currentBowlers});
+    });
   });
 }
 
