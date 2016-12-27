@@ -158,7 +158,7 @@ app.post('/',function(req,res){
     }
     var text_speech = '<p><s>'+summaryObj.summary+'.<break time="500ms"/></s>';
     var index=0;
-    for(var player of strikebatsman)
+    for(var player of summaryObj.strikebatsman)
     {
       var batsmanRegex = /([a-zA-Z ]+)([0-9]+)\*/g
       var batsmanMatches = batsmanRegex.exec(player);
