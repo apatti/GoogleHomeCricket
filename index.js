@@ -96,7 +96,8 @@ app.post('/',function(req,res){
       let speech = '<speak><p><s>Hi, welcome to Cricket Scores.<break time="1s"/></s>';
       speech += '<s>You can: Get live summary of any cricket game. <break time="500ms"/></s>';
       speech += '<s>Check if a team is currently playing or not. <break time="500ms"/></s>';
-      //speech += '<s>Get full details of a live game. <break time="500ms"/></s>';
+      speech += '<s>Check who is at crease for a live game. <break time="500ms"/></s>';
+      speech += '<s>Check who all got out for a live game. <break time="500ms"/></s>';
       speech += '<s>Get list of games happening today.</s> <break time="500ms"/>';
       speech += '</p></speak>';
       assistant.ask(speech);
