@@ -146,7 +146,7 @@ app.post('/',function(req,res){
       var strikebatsman=[]
       for(var batsman of strikebatsmanObj)
       {
-        var batsmanRegex = /([a-zA-Z ]+)([0-9]+)\*/g
+        var batsmanRegex = /([a-zA-Z -]+)([0-9]+)\*/g
         var batsmanMatches = batsmanRegex.exec(batsman);
         strikebatsman.push({name:batsmanMatches[1].replace(/\s*$/,""),score:batsmanMatches[2]});
       }
@@ -182,7 +182,7 @@ app.post('/',function(req,res){
           var index=0;
           for(var player of summaryObj.strikebatsman)
           {
-            var batsmanRegex = /([a-zA-Z ]+)([0-9]+)\*/g
+            var batsmanRegex = /([a-zA-Z -]+)([0-9]+)\*/g
             var batsmanMatches = batsmanRegex.exec(player);
             if(index==1)
             {
@@ -235,22 +235,22 @@ app.post('/',function(req,res){
           var index=0;
           for(var player of summaryObj.currentBowlers)
           {
-            var batsmanRegex = /([a-zA-Z ]+)([0-9]+)\*/g
-            var batsmanMatches = batsmanRegex.exec(player);
+            var bowlerRegex = /([a-zA-Z -]+)([0-9]+)-([0-9]+)-([0-9]+)-([0-9]+)/g
+            var bowlerMatches = bowlerRegex.exec(player);
             if(index==1)
             {
               text_speech += ' and ';
             }
-            text_speech += batsmanMatches[1].replace(/\s*$/,"")
+            text_speech += bowlerMatches[1].replace(/\s*$/,"")
             index++;
           }
           if(index==1)
           {
-            text_speech+=' is at the crease.';
+            text_speech+=' is bowling.';
           }
           if(index==2)
           {
-            text_speech+= ' are at the crease.';
+            text_speech+= ' are bowling.';
           }
         }
 
@@ -270,7 +270,7 @@ app.post('/',function(req,res){
     var index=0;
     for(var player of summaryObj.strikebatsman)
     {
-      var batsmanRegex = /([a-zA-Z ]+)([0-9]+)\*/g
+      var batsmanRegex = /([a-zA-Z -]+)([0-9]+)\*/g
       var batsmanMatches = batsmanRegex.exec(player);
       if(index==1)
       {
