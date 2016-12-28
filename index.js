@@ -194,6 +194,13 @@ app.post('/',function(req,res){
     controller.gameSummary(team,function(summaryObj)
     {
       var text_speech='<speak>';
+      if(summaryObj==null)
+      {
+        text_speech+="Sorry facing some technical difficulties, try again. </speak>";
+        console.log("Requested team:"+team);
+        assistant.ask(text_speech);
+        return;
+      }
       if(!('summary' in summaryObj))
       {
         text_speech += '<speak>Sorry, '+assistant.getArgument('team')+' is not playing any game now <break time="1s"/> </speak>'
