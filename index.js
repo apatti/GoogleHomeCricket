@@ -258,6 +258,7 @@ app.post('/',function(req,res){
       if(summaryObj==null)
       {
         text_speech+="Sorry facing some technical difficulties, try again. </speak>";
+        console.log("Requested team for bowling:"+team);
         assistant.ask(text_speech);
         return;
       }
